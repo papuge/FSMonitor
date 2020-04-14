@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CD3339BE2445FEEE007CBDEB /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = CD3339BD2445FEEE007CBDEB /* main.c */; };
+		CD3339C62445FF07007CBDEB /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3339C52445FF07007CBDEB /* CoreServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		CD3339BA2445FEEE007CBDEB /* FSMonitor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FSMonitor; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD3339BD2445FEEE007CBDEB /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		CD3339C52445FF07007CBDEB /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD3339C62445FF07007CBDEB /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +46,7 @@
 			children = (
 				CD3339BC2445FEEE007CBDEB /* FSMonitor */,
 				CD3339BB2445FEEE007CBDEB /* Products */,
+				CD3339C42445FF07007CBDEB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +64,14 @@
 				CD3339BD2445FEEE007CBDEB /* main.c */,
 			);
 			path = FSMonitor;
+			sourceTree = "<group>";
+		};
+		CD3339C42445FF07007CBDEB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CD3339C52445FF07007CBDEB /* CoreServices.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
