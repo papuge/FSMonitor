@@ -12,27 +12,33 @@
 #include <time.h>
 #include <CoreServices/CoreServices.h>
 
+#define C_RED "\x1b[31m"
+#define C_GREEN "\x1b[32m"
+#define C_YELLOW "\x1b[33m"
+#define C_CYAN "\x1b[36m"
+#define C_RESET "\x1b[0m"
+
 const char *flags[] = {
-    "Must Scan Sub Dirs",
-    "User Dropped",
-    "Kernel Dropped",
-    "Event Ids Wrapped",
-    "History Done",
-    "Root Changed",
+    "MustScanSubDirs",
+    "UserDropped",
+    "KernelDropped",
+    "EventIdsWrapped",
+    "HistoryDone",
+    "RootChanged",
     "Mount",
     "Unmount",
-    "File Created",
-    "Item Removed",
-    "",
-    "File Renamed",
-    "File Modified",
-    "",
-    "",
-    "XattrMod",
-    "",
-    "",
-    "",
-    ""};
+    "ItemCreated",
+    "ItemRemoved",
+    "ItemInodeMetaMod",
+    "ItemRenamed",
+    "ItemModified",
+    "ItemFinderInfoMod",
+    "ItemChangeOwner",
+    "ItemXattrMod",
+    "ItemIsFile",
+    "ItemIsDir",
+    "ItemIsSymlink",
+    "OwnEvent"};
 
 long long findSize(const char *file_name)
 {
@@ -99,11 +105,11 @@ void displayEventFlags(long long eventFlag)
     {
         if ((eventFlag & bit) != 0)
         {
-            printf("%s ", flags[index]);
+            printf(C_YELLOW "%s ", flags[index]);
         }
         bit <<= 1;
     }
-    printf("\n");
+    printf(C_RESET "\n\n");
 }
 
 void myСallback(
@@ -117,21 +123,22 @@ void myСallback(
     char **paths = eventPaths;
     for (size_t i = 0; i < numEvents; i++)
     {
-        printf("%llu\t%s\n", eventIds[i], paths[i]);
+        printf("%s\n", paths[i]);
 
         long long fileSize = findSize(paths[i]);
         if (fileSize != -1)
         {
             char *checkSum = findCheckSum(paths[i]);
-            printf("Check sum: %s Size: %llu bytes\n", checkSum, fileSize);
+            printf(C_GREEN "Check sum: %s\n" C_RESET, checkSum);
+            printf(C_GREEN "Size: %llu bytes\n" C_RESET, fileSize);
         }
         else
         {
-            printf("%s\n", "File may be deleted");
+            printf(C_RED "%s\n" C_RESET, "File doesn't exist anymore");
         }
 
         struct tm tm = getCurrentTime();
-        printf("Datetime: %d-%02d-%02d %02d:%02d:%02d\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
+        printf(C_GREEN "Datetime: %d-%02d-%02d %02d:%02d:%02d\n" C_RESET, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
 
         displayEventFlags(eventFlags[i]);
     }
@@ -140,7 +147,15 @@ void myСallback(
 
 int main(int argc, const char *argv[])
 {
-    CFStringRef mypath = CFSTR("/Users/grispy/Documents/");
+    CFStringRef mypath;
+    if (argc == 1)
+    {
+        mypath = CFSTR("/Users/");
+    }
+    else
+    {
+        mypath = CFStringCreateWithCString(NULL, argv[1], 0);
+    }
     CFArrayRef pathsToWatch = CFArrayCreate(NULL, (const void **)&mypath, 1, NULL);
     void *callbackInfo = NULL;
     FSEventStreamRef stream;
