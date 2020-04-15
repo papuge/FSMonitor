@@ -131,6 +131,7 @@ void myСallback(
             char *checkSum = findCheckSum(paths[i]);
             printf(C_GREEN "Check sum: %s\n" C_RESET, checkSum);
             printf(C_GREEN "Size: %llu bytes\n" C_RESET, fileSize);
+            free(checkSum);
         }
         else
         {
@@ -150,7 +151,7 @@ int main(int argc, const char *argv[])
     CFStringRef mypath;
     if (argc == 1)
     {
-        mypath = CFSTR("/Users/");
+        mypath = CFSTR("./");
     }
     else
     {
